@@ -1,7 +1,11 @@
+import Sidebar from "components/Sidebar";
 
-const PrivateLayout = () => {
+const PrivateLayout = ({children}) => {
     return (
-        <div>Private Layout</div>
+        <div>
+            <Sidebar />
+            {children}
+        </div>
     );
 }
 
