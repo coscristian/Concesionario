@@ -1,10 +1,13 @@
 import Sidebar from "components/Sidebar";
+import { Outlet } from "react-router-dom";
 
-const PrivateLayout = ({children}) => {
+const PrivateLayout = () => {
     return (
-        <div>
+        <div className="flex w-screen h-screen">
             <Sidebar />
-            {children}
+            <main className="flex w-full bg-blue-400 overflow-y-scroll">
+                <Outlet />
+            </main>
         </div>
     );
 }

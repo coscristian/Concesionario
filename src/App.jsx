@@ -7,39 +7,27 @@ import './styles/styles.css';
 import PrivateLayout from 'layouts/PrivateLayout';
 import AuthLayout from 'layouts/AuthLayout';
 
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Vehiculos from 'pages/admin/Vehiculos';
 import Clientes from 'pages/admin/Clientes';
 
 function App() {
     return (
         <Router>
-            <Switch>
-                <Route path={['/admin', '/admin/vehiculos', '/admin/clientes']}>
-                    <PrivateLayout>
-                        <Switch>                            
-                            <Route path='/admin/vehiculos'> <Vehiculos /> </Route>
-                            <Route path='/admin/clientes'> <Clientes /> </Route>
-                            <Route path='/admin'> <Admin /> </Route>
-                        </Switch>
-                    </PrivateLayout>
+            <Routes>
+                <Route path="/" element={<PublicLayout />}>
+                    <Route path="/" element={<Index />} />
                 </Route>
-                <Route path={['/login', '/registro']}>
-                    <AuthLayout>
-                        <Switch>
-                            <Route path='/login'> <Login /> </Route>
-                            <Route path='/registro'> <Registro /> </Route>
-                        </Switch>
-                    </AuthLayout>
+                <Route path="/admin" element={<PrivateLayout />}>
+                    <Route path="/admin" element={<Admin />} />
+                    <Route path="vehiculos" element={<Vehiculos />} />
+                    <Route path="clientes" element={<Clientes />} />
                 </Route>
-                <Route path={['/']}>
-                    <PublicLayout>
-                        <Switch>
-                            <Route path='/'> <Index /> </Route>                            
-                        </Switch>
-                    </PublicLayout>
+                <Route path="/login" element={<AuthLayout />}>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="registro" element={<Registro />} />
                 </Route>
-            </Switch>            
+            </Routes>            
         </Router>
     );
 }
