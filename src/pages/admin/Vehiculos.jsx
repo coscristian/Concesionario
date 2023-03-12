@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+// UseRef -> 
 
 const VehiculosBackend = [
   {
@@ -82,9 +84,9 @@ const Vehiculos = () => {
         <TablaVehiculos listaVehiculos={vehiculos} />
       ) : (
         <FormularioCreacionVehiculos
-          funcionParaMostrarLaTabla={setMostrarTabla}
+          setMostrarTabla={setMostrarTabla}
           listaVehiculos={vehiculos}
-          funcionParaAgregarUnVehiculo={setVehiculos}/>
+          setVehiculos={setVehiculos}/>
       )}
       <ToastContainer
         position="bottom-center"
@@ -128,19 +130,26 @@ const TablaVehiculos = ({ listaVehiculos}) => {
   );
 };
 
-const FormularioCreacionVehiculos = ({funcionParaMostrarLaTabla, listaVehiculos, funcionParaAgregarUnVehiculo }) => {
-  const [nombre, setNombre] = useState();
-  const [marca, setMarca] = useState();
-  const [modelo, setModelo] = useState();
-  const [usado, setUsado] = useState();
+const FormularioCreacionVehiculos = ({setMostrarTabla, listaVehiculos, setVehiculos }) => {
 
-  const enviarAlBackend = () => {
-    console.log("Nombre:", nombre, "Modelo:", modelo, "Marca", marca, "Usado", usado);
-    toast.success("Vehiculo agregado correctamente");
-    funcionParaMostrarLaTabla(true);
-    // Spread operator -> Tome lo que ya habia mas lo que voy a agregar
-    funcionParaAgregarUnVehiculo([...listaVehiculos,
-       {nombre: nombre, marca: marca, modelo: modelo, usado: usado}])
+  const form = useRef(null);
+
+  const submitForm = (e) =>{
+    e.preventDefault();
+    const fd = new FormData(form.current);
+
+    const nuevoVehiculo = {};
+    fd.forEach((value, key)=>{
+      nuevoVehiculo[key] = value;
+    });
+    setMostrarTabla(true);
+    setVehiculos([...listaVehiculos, nuevoVehiculo]);
+    // Identificar el caso de exito y mostrar un toast
+
+    // Identificar el caso de falla  y mostrar un toast
+    
+    toast.success("Vehiculo agregado con exito!");
+    console.log("Datos del form enviados", fd);
   }
 
   return (
@@ -149,18 +158,16 @@ const FormularioCreacionVehiculos = ({funcionParaMostrarLaTabla, listaVehiculos,
         Crear nuevo vehiculo
       </h2>
 
-      <form className="flex flex-col">
+      <form ref={form} onSubmit={submitForm}  className="flex flex-col">
         <label className="flex flex-col" htmlFor="nombre">
           Nombre del vehiculo
           <input
             name="nombre"
-            
+            required
             className="bg-gray-50 border border-gray-600 p-2 rounded-lg m-2"
             type="text"
-            value={nombre}
-            onChange={(e) => {
-              setNombre(e.target.value);
-            }}
+
+            
           />
         </label>
 
@@ -168,13 +175,12 @@ const FormularioCreacionVehiculos = ({funcionParaMostrarLaTabla, listaVehiculos,
           Marca del vehiculo
           <select
             name="marca"
+            required
             className="bg-gray-50 border border-gray-600 p-2 rounded-lg m-2"
-            value={marca}
-            onChange={(e)=> {
-              setMarca(e.target.value);
-            }}
+
+            defaultValue={0}
           >
-            <option disabled>Seleccione una opcion</option>
+            <option disabled value={0}>Seleccione una opcion</option>
             <option>Renault</option>
             <option>Toyota</option>
             <option>Ford</option>
@@ -187,15 +193,13 @@ const FormularioCreacionVehiculos = ({funcionParaMostrarLaTabla, listaVehiculos,
           Modelo del vehiculo
           <input
             name="modelo"
-            
+            required
             className="bg-gray-50 border border-gray-600 p-2 rounded-lg m-2"
             type="number"
             min={1992}
             max={2023}
-            value={modelo}
-            onChange={(e) => {
-              setModelo(e.target.value);
-            }}
+
+            
           />
         </label>
 
@@ -203,11 +207,10 @@ const FormularioCreacionVehiculos = ({funcionParaMostrarLaTabla, listaVehiculos,
           Usado
           <select
             name="usado"
+            required
             className="bg-gray-50 border border-gray-600 p-2 rounded-lg m-2"
-            value={usado}
-            onChange={(e)=> {
-              setUsado(e.target.value);
-            }}
+
+            
           >
             <option disabled>Seleccione una opcion</option>
             <option>Si</option>
@@ -216,11 +219,9 @@ const FormularioCreacionVehiculos = ({funcionParaMostrarLaTabla, listaVehiculos,
         </label>
 
         <button
-          type="button"
+          type="submit"
           className="col-span-2 bg-green-500 p-2 rounded-full shadow-md hover:bg-green-600 text-white"
-          onClick={()=>{
-            enviarAlBackend();
-          }}
+
         >
           Guardar vehiculo
         </button>
