@@ -2,23 +2,26 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import TriggerDarkMode from 'components/triggerDarkMode';
 import ImagenLogo from './ImagenLogo';
-import 'styles/responsive.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Sidebar = () => {
   return (
-    <nav className='w-72 border border-gray-500 h-full flex flex-col bg-gray-200 p-4 sidebar'>
-      <Link to="/admin">
-        <ImagenLogo />
-      </Link>
-      
-      <div className='my-4'>
-        <Ruta nombre={'Perfil'} ruta={'/admin/perfil'}/>
-        <Ruta nombre={'Vehiculos'} ruta={'/admin/vehiculos'}/>
-        <Ruta nombre={'Ventas'} ruta={'/admin/ventas'}/>
-        <Ruta nombre={'Usuarios'} ruta={'/admin/usuarios'}/>
-      </div>
-      <button>Cerrar Sesión</button>
-    </nav>
+    <div>
+      <nav className='hidden md:flex md:w-72 border border-gray-500 h-full flex-col bg-gray-200 p-4 '>
+        <Link to="/admin">
+          <ImagenLogo />
+        </Link>
+        
+        <div className='my-4'>
+          <Ruta nombre={'Perfil'} ruta={'/admin/perfil'}/>
+          <Ruta nombre={'Vehiculos'} ruta={'/admin/vehiculos'}/>
+          <Ruta nombre={'Ventas'} ruta={'/admin/ventas'}/>
+          <Ruta nombre={'Usuarios'} ruta={'/admin/usuarios'}/>
+        </div>
+        <button>Cerrar Sesión</button>
+      </nav>
+
+    </div>
   );
 }
 
