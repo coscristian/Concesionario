@@ -1,0 +1,8 @@
+
+
+/*Se aplica cuando la pantalla es 600 o menor*/
+@media(max-width: 600px) {
+    .sidebar {
+        display: none;
+    }
+}

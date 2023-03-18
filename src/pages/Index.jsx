@@ -5,7 +5,7 @@ const Index = () => {
   const {darkMode} = useDarkMode();
   
   return (
-      <div className={`flex h-full bg-gray-${darkMode ? '900': '50'}`}>Contenido Landing concesionario</div>
+      <div className={`flex h-full bg-gray-k${darkMode ? '900': '50'}`}>Contenido Landing concesionario</div>
   );
 }
 
