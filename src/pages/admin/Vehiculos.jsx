@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { nanoid } from "nanoid";
+import { Tooltip } from "@mui/material";
 
 // UseRef ->
 
@@ -51,13 +52,12 @@ const Vehiculos = () => {
   const [colorBoton, setColorBoton] = useState("indigo");
   const [ejecutarConsulta, setEjecutarConsulta] = useState(true);
 
-  useEffect(()=>{
-    if(ejecutarConsulta){
-      console.log("OBtener vehiculos")
+  useEffect(() => {
+    if (ejecutarConsulta) {
+      console.log("OBtener vehiculos");
       setEjecutarConsulta(false);
     }
   }, [ejecutarConsulta]);
-
 
   useEffect(() => {
     if (mostrarTabla) {
@@ -107,10 +107,9 @@ const Vehiculos = () => {
 const FilaVehiculo = ({ vehiculo }) => {
   const [edit, setEdit] = useState(false);
 
-
   const eliminarVehiculo = () => {
-    console.log("eliminar vehiculo")
-  }
+    console.log("eliminar vehiculo");
+  };
   return (
     <tr>
       {edit ? (
@@ -156,19 +155,38 @@ const FilaVehiculo = ({ vehiculo }) => {
       <td>
         <div className="flex w-full justify-around">
           {edit ? (
-            <button type="submit">
-              <i
-                onClick={() => setEdit(!edit)}
-                className="fas fa-check hover:text-green-500"
-              />
-            </button>
+            <>
+              <Tooltip title="Guardar cambios" arrow>
+                <button type="submit">
+                  <i
+                    onClick={() => setEdit(!edit)}
+                    className="fas fa-check hover:text-green-500"
+                  />
+                </button>
+              </Tooltip>
+              <Tooltip title="Cancelar edición" arrow>
+                <i
+                  onClick={() => setEdit(!edit)}
+                  className="fas fa-ban text-red-700 hover:text-red-500"
+                />
+              </Tooltip>
+            </>
           ) : (
-            <i
-              onClick={() => setEdit(!edit)}
-              className="fas fa-pencil-alt text-yellow-700 hover:text-yellow-500"
-            />
+            <>
+              <Tooltip title="Editar vehiculo" arrow>
+                <i
+                  onClick={() => setEdit(!edit)}
+                  className="fas fa-pencil-alt text-yellow-700 hover:text-yellow-500"
+                />
+              </Tooltip>
+              <Tooltip title="Eliminar vehiculo" arrow>
+                <i
+                  onClick={() => eliminarVehiculo()}
+                  className="fas fa-trash text-red-700 hover:text-red-500"
+                />
+              </Tooltip>
+            </>
           )}
-          <i onClick={() => eliminarVehiculo()}className="fas fa-trash text-red-700 hover:text-red-500" />
         </div>
       </td>
     </tr>
@@ -184,8 +202,8 @@ const TablaVehiculos = ({ listaVehiculos }) => {
     e.preventDefault();
     const fd = new FormData(form.current);
 
-    console.log(fd );
-  }
+    console.log(fd);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center w-full">
