@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { nanoid } from "nanoid";
-import { Tooltip } from "@mui/material";
+import { Dialog, Tooltip } from "@mui/material";
 
 // UseRef ->
 
@@ -106,6 +106,7 @@ const Vehiculos = () => {
 
 const FilaVehiculo = ({ vehiculo }) => {
   const [edit, setEdit] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const eliminarVehiculo = () => {
     console.log("eliminar vehiculo");
@@ -181,13 +182,24 @@ const FilaVehiculo = ({ vehiculo }) => {
               </Tooltip>
               <Tooltip title="Eliminar vehiculo" arrow>
                 <i
-                  onClick={() => eliminarVehiculo()}
+                  onClick={() => setOpenDialog(true)}
                   className="fas fa-trash text-red-700 hover:text-red-500"
                 />
               </Tooltip>
             </>
           )}
         </div>
+        <Dialog open={openDialog}>
+          <div className="p-8 flex flex-col">
+            <h1 className="text-gray-900">
+              ¿Está seguro de querer eliminar el vehiculo?
+            </h1>
+            <div className="flex w-full justify-center">
+              <button onClick={() => eliminarVehiculo()} className="px-4 py-2 mx-2 my-4 text-2xl font-bold bg-green-500 text-white hover:bg-green-700 rounded-md shadow-md">Sí</button>
+              <button onClick={() => setOpenDialog(false)} className="px-4 py-2 mx-2 my-4 text-2xl font-bold bg-red-500 text-white hover:bg-red-700 rounded-md shadow-md">No</button>
+            </div>
+          </div>
+        </Dialog>
       </td>
     </tr>
   );
